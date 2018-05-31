@@ -1,0 +1,12 @@
+{
+    "name": "leonid/studio",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Leonid\\Studio\\": "private/"
+        }
+    }
+}
