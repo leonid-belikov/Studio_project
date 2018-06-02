@@ -12,13 +12,16 @@
     </header>
 </a>
 <ul style="background-color: antiquewhite">
-<!--    <li><a href="/">На главную</a></li>-->
     <li><a href="/portfolio">Наши проекты</a></li>
+
+    <?php
+    if (!$_SESSION['auth']) :?>
     <li><a href="/account/registration">Регистрация</a></li>
-    <li><a href="/contacts">Контакты</a></li>
-    <?php if ($_SESSION['auth']) :?>
+    <?php else: ?>
     <li><a href="/account">Личный кабинет</a></li>
     <?php endif; ?>
+
+    <li><a href="/contacts">Контакты</a></li>
 </ul>
 
 <?php include $view; ?>
