@@ -1,3 +1,6 @@
+
+<div><h2>Регистрация</h2></div>
+
 <form id="reg_form">
     <label for="reg_login">
         Введите логин
@@ -11,4 +14,5 @@
 
     <input type="submit" value="Отправить">
 </form>
+
 <div id="result" style="display: none"></div>

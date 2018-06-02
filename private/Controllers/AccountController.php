@@ -22,6 +22,11 @@ class AccountController extends Controller
         echo $reg->reg_user("../private/data.txt");
     }
 
+    public function authorization_userAction() {
+        $auth = new AccountModel();
+        echo $auth->auth_user("../private/data.txt");
+    }
+
     public function authorizationAction() {
         $view = 'authorization_view.php';
         $title = 'STUDIO. Авторизация';

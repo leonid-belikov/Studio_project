@@ -6,12 +6,19 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
-<header style="background-color: lavender; text-align: center; font-size: 50px">STUDIO</header>
+<a href="/" style="text-decoration: none">
+    <header style="background-color: lavender; text-align: center; font-size: 50px">
+        STUDIO
+    </header>
+</a>
 <ul style="background-color: antiquewhite">
-    <li><a href="/">На главную</a></li>
+<!--    <li><a href="/">На главную</a></li>-->
     <li><a href="/portfolio">Наши проекты</a></li>
     <li><a href="/account/registration">Регистрация</a></li>
     <li><a href="/contacts">Контакты</a></li>
+    <?php if ($_SESSION['auth']) :?>
+    <li><a href="/account">Личный кабинет</a></li>
+    <?php endif; ?>
 </ul>
 
 <?php include $view; ?>

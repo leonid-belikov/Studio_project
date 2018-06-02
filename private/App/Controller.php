@@ -3,8 +3,9 @@ namespace Leonid\Studio\App;
 
 
 
-class Controller
-{
+class Controller {
+
+
     protected function generateResponse($view, $data=[]){
         if (is_array($data)) {
             extract($data);
