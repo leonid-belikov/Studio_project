@@ -36,7 +36,6 @@ class AccountModel {
         $_SESSION['login'] = $login;
         $_SESSION['pass'] = $pass;
         echo "user add";
-        var_dump($_SESSION);
         return;
     }
 
@@ -95,7 +94,6 @@ class AccountModel {
         $_SESSION['login'] = $login;
         $_SESSION['pass'] = $pass;
         echo 'login successful';
-        var_dump($_SESSION);
         return;
     }
 
