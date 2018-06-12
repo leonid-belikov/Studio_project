@@ -19,12 +19,12 @@ class AccountController extends Controller
 
     public function registration_userAction() {
         $reg = new AccountModel();
-        echo $reg->reg_user("../private/data.txt");
+        echo $reg->reg_user();
     }
 
     public function authorization_userAction() {
         $auth = new AccountModel();
-        echo $auth->auth_user("../private/data.txt");
+        echo $auth->auth_user();
     }
 
     public function authorizationAction() {

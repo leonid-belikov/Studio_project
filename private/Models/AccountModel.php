@@ -3,31 +3,41 @@
 namespace Leonid\Studio\Models;
 
 
+
+use Leonid\Studio\App\DB;
+
+
 class AccountModel {
 
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = new DB();
+    }
 
 // Регистрация пользователя
 
 
-    function reg_user($filePath){
+    function reg_user(){
 
         $post = $_POST;
         $reg_login = $post['reg_login'];
         $reg_pass = $post['reg_pass'];
 
         if (isset($reg_login, $reg_pass)) {
-            $this->registration($reg_login, $reg_pass, $filePath);
+            $this->registration($reg_login, $reg_pass);
         }
     }
 
 
-    private function registration($login, $pass, $path){
+    private function registration($login, $pass){
 
-        if ($this->data_in_file($login, $path)) {
+        if ($this->data_in_base($login)) {
             echo "user already registered";
             return;
         }
-        if (!$this->add_user($login, $pass, $path)) {
+        if (!$this->add_user($login, $pass)) {
             echo "user not add";
             return;
         }
@@ -40,34 +50,41 @@ class AccountModel {
     }
 
 
-    private function data_in_file($login, $path){
-        $str = file_get_contents($path);
-        $from_file = explode(";", $str);
-        foreach ($from_file as $val) {
-            $item = explode(",", $val);
-            if ($login == $item[0]) {
-                return true;
-            }
-        }
-        return false;
-    }
+    private function data_in_base($login) {
 
-
-    private function add_user($login, $pass, $path){
-        $pass = password_hash($pass,PASSWORD_DEFAULT);
-        $str = "$login,$pass;";
-        if (file_put_contents($path, $str,FILE_APPEND) === false) {
+        $sql = "SELECT Login FROM User WHERE Login= :login";
+        $params = [
+            'login' => $login
+        ];
+        if ($this->db->fetchData($sql, $params) === false) {
             return false;
         }
         return true;
     }
 
 
+    private function add_user($login, $pass) {
+
+        $pass = password_hash($pass, PASSWORD_DEFAULT);
+
+        $sql = "INSERT INTO User (Login, Pass) VALUES (:login, :pass)";
+        $params = [
+            'login' => $login,
+            'pass' => $pass
+        ];
+        return $this->db->executePrepareSql($sql, $params);
+
+    }
+
+
+
+
+
 //----------------------------------------------------------------
 // Авторизация пользователя
 
 
-    function auth_user($filePath){
+    function auth_user(){
 
         $post = $_POST;
         $auth_login = $post['auth_login'];
@@ -75,17 +92,17 @@ class AccountModel {
 
 
         if (isset($auth_login, $auth_pass)) {
-            $this->authorization($auth_login, $auth_pass, $filePath);
+            $this->authorization($auth_login, $auth_pass);
         }
     }
 
 
-    private function authorization($login, $pass, $path) {
-        if (!$this->data_in_file($login, $path)) {
+    function authorization($login, $pass) {
+        if (!$this->data_in_base($login)) {
             echo "user is not registered";
             return;
         }
-        if (!$this->check_password($pass, $path)) {
+        if (!$this->check_password($login, $pass)) {
             echo "wrong password";
             return;
         }
@@ -98,15 +115,19 @@ class AccountModel {
     }
 
 
-    function check_password($pass, $path){
-        $str = file_get_contents($path);
-        $from_file = explode(";", $str);
-        foreach ($from_file as $val) {
-            $item = explode(",", $val);
-            if (password_verify($pass, $item[1])) {
-                return true;
-            }
+    function check_password($login, $pass) {
+
+        $sql = "SELECT Pass FROM User WHERE Login= :login";
+        $params = [
+            'login' => $login
+        ];
+        $resp = $this->db->fetchData($sql, $params);
+        if (password_verify($pass, $resp['Pass'])) {
+            return true;
         }
+
         return false;
     }
+
+
 }
