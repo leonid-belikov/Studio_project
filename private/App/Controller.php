@@ -10,6 +10,7 @@ class Controller {
         if (is_array($data)) {
             extract($data);
         }
+        session_start();
         require_once "../private/Views/template.php";
     }
 }

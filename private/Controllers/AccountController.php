@@ -34,4 +34,14 @@ class AccountController extends Controller
             'title'=> $title,
         ]);
     }
+
+    public function userroomAction() {
+        $view = 'userroom_view.php';
+        $title = 'Личный кабинет';
+        $this->generateResponse($view,
+            [
+                'title'=> $title,
+            ]
+        );
+    }
 }

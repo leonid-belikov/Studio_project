@@ -6,27 +6,37 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
-<a href="/" style="text-decoration: none">
     <header style="background-color: lavender; text-align: center; font-size: 50px">
-        STUDIO
+        <a href="/" style="text-decoration: none">
+            STUDIO
+        </a>
+
+        <?php if (!$_SESSION['auth']) :?>
+        <a href="/account/authorization">Войти</a>
+        <?php else: ?>
+        <a href="/index/quit">Выйти</a>
+        <?php endif; ?>
     </header>
-</a>
-<ul style="background-color: antiquewhite">
-    <li><a href="/portfolio">Наши проекты</a></li>
 
-    <?php
-    if (!$_SESSION['auth']) :?>
-    <li><a href="/account/registration">Регистрация</a></li>
-    <?php else: ?>
-    <li><a href="/account">Личный кабинет</a></li>
-    <?php endif; ?>
 
-    <li><a href="/contacts">Контакты</a></li>
-</ul>
+    <ul style="background-color: antiquewhite">
+        <li><a href="/portfolio">Наши проекты</a></li>
 
-<?php include $view; ?>
+        <?php
+        if ($_SESSION['auth']) :?>
+            <li><a href="/account/userroom">Личный кабинет</a></li>
+        <?php else: ?>
+            <li><a href="/account/registration">Регистрация</a></li>
+        <?php endif; ?>
 
-<footer style="margin-top: 15px; background-color: lavender; text-align: center">STUDIO.2018</footer>
+        <li><a href="/contacts">Контакты</a></li>
+    </ul>
+
+
+    <?php include $view; ?>
+
+
+    <footer style="margin-top: 15px; background-color: lavender; text-align: center">STUDIO.2018</footer>
 </body>
 <script src="/js/account.js"></script>
 </html>
