@@ -1,0 +1,21 @@
+
+header {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+header .container .row {
+    height: 100px;
+}
+
+.header-menu {
+    text-align: right;
+}
+
+.header-menu a {
+    color: #e6edf4;
+    text-transform: uppercase;
+    margin-left: 10px;
+}

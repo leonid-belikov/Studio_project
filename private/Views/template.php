@@ -3,40 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title><?php echo $title; ?></title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Dosis" rel="stylesheet">
 </head>
 <body>
-    <header style="background-color: lavender; text-align: center; font-size: 50px">
-        <a href="/" style="text-decoration: none">
-            STUDIO
-        </a>
+    <header id="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-2">
+                    <a href="/"><img src="/images/Logo.png" alt="STUDIO"></a>
+                </div>
+                <div class="col-10 header-menu">
 
-        <?php if (!$_SESSION['auth']) :?>
-        <a href="/account/authorization">Войти</a>
-        <?php else: ?>
-        <a href="/index/quit">Выйти</a>
-        <?php endif; ?>
+                <?php
+                if ($_SESSION['auth']) :
+                    require "header_auth.php";
+                else :
+                    require "header_not_auth.php";
+                endif;
+                ?>
+
+                </div>
+            </div>
+        </div>
     </header>
 
-
-    <ul style="background-color: antiquewhite">
-        <li><a href="/portfolio">Наши проекты</a></li>
-
-        <?php
-        if ($_SESSION['auth']) :?>
-            <li><a href="/account/userroom">Личный кабинет</a></li>
-        <?php else: ?>
-            <li><a href="/account/registration">Регистрация</a></li>
-        <?php endif; ?>
-
-        <li><a href="/contacts">Контакты</a></li>
-    </ul>
+    <?php if ($view != 'index_view.php') :?>
+        <div class="first_div"></div>
+    <?php endif; ?>
 
 
-    <?php include $view; ?>
+        <?php include $view; ?>
 
 
-    <footer style="margin-top: 15px; background-color: lavender; text-align: center">STUDIO.2018</footer>
+    <footer style="height: 500px; background-color: lavender; text-align: center">STUDIO.2018</footer>
 </body>
+<script src="/js/main.js"></script>
 <script src="/js/account.js"></script>
 </html>

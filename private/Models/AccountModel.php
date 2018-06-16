@@ -11,15 +11,14 @@ class AccountModel {
 
     private $db;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->db = new DB();
     }
 
 // Регистрация пользователя
 
 
-    function reg_user(){
+    function reg_user() {
 
         $post = $_POST;
         $reg_login = $post['reg_login'];
