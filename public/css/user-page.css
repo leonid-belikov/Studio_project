@@ -1,0 +1,79 @@
+#userroom {
+    background-image: url(/images/userroom-bg_2.png);
+    /*padding-top: 100px;*/
+    /*background-position-y: -900px;*/
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+#userroom .wrapper{
+    background-color: rgba(255, 255, 255, 0.5);
+    min-height: 100vh;
+    padding-top: 100px;
+}
+
+#userroom h1{
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 19px;
+    color: #322e6b;
+    margin: 45px 0;
+}
+
+.order-menu-item{
+    cursor: pointer;
+    padding: 40px;
+    margin: 10px 0;
+    background-color: rgba(207, 205, 234, 0.4);
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    width: 350px;
+    height: 100px;
+    box-shadow: 3px 6px 25px 0 rgba(27, 24, 57, 0.71);
+}
+
+.order-menu-item:first-child{
+    margin-top: 0;
+}
+
+.order-menu-item:hover{
+    background-color: #322e6b;
+    color: #f1f1f1;
+}
+
+#open-order {
+    top: 0px;
+    left: -600px;
+}
+
+#inc-orders {
+    top: 105px;
+    left: -600px;
+}
+
+#comp-orders {
+    top: 220px;
+    left: -600px;
+}
+
+.order-area {
+    background-color: rgba(207, 205, 234, 0.4);
+    border-radius: 12px;
+    padding: 15px;
+    opacity: 0;
+    height: 460px;
+    box-shadow: 3px 6px 25px 0 rgba(27, 24, 57, 0.71);
+}
+
+#order-div {
+    display: none;
+    /*position: absolute;*/
+    /*top: 25px;*/
+    /*left: 0px;*/
+    background-color: #756eff;
+    width: 200px;
+    height: 100px;
+}

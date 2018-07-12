@@ -15,7 +15,31 @@ header .container .row {
 }
 
 .header-menu a {
-    color: #e6edf4;
+    color: #c1c8cf;
     text-transform: uppercase;
-    margin-left: 10px;
+    margin-left: 30px;
 }
+
+.header-menu a:hover {
+    color: #fbfbff;
+    text-decoration: none;
+}
+
+#user_icon {
+    height: 20px;
+    padding-right: 5px;
+    margin-bottom: -4px;
+}
+
+header .username {
+    padding: 5px 18px;
+    border-radius: 15px;
+    display: inline-block;
+    border: 1px solid #c1c8cf;
+}
+
+header .username:hover {
+    border: 1px solid #ffffff;
+    background: hsla(280, 73%, 59%, 0.2);
+}
+

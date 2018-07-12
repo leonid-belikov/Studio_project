@@ -11,7 +11,7 @@ class AccountController extends Controller
 {
     public function registrationAction() {
         $view = 'registration_view.php';
-        $title = 'STUDIO. Регистрация';
+        $title = 'Registration';
         $this->generateResponse($view, [
             'title'=> $title,
         ]);
@@ -29,15 +29,17 @@ class AccountController extends Controller
 
     public function authorizationAction() {
         $view = 'authorization_view.php';
-        $title = 'STUDIO. Авторизация';
-        $this->generateResponse($view, [
-            'title'=> $title,
-        ]);
+        $title = 'Log In';
+        $this->generateResponse($view,
+            [
+                'title'=> $title,
+            ]
+        );
     }
 
     public function userroomAction() {
         $view = 'userroom_view.php';
-        $title = 'Личный кабинет';
+        $title = 'Personal cabinet';
         $this->generateResponse($view,
             [
                 'title'=> $title,

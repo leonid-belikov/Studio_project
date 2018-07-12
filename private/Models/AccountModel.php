@@ -21,11 +21,11 @@ class AccountModel {
     function reg_user() {
 
         $post = $_POST;
-        $reg_login = $post['reg_login'];
+        $login = $post['reg_login'];
         $reg_pass = $post['reg_pass'];
 
-        if (isset($reg_login, $reg_pass)) {
-            $this->registration($reg_login, $reg_pass);
+        if (isset($login, $reg_pass)) {
+            $this->registration($login, $reg_pass);
         }
     }
 
@@ -64,12 +64,12 @@ class AccountModel {
 
     private function add_user($login, $pass) {
 
-        $pass = password_hash($pass, PASSWORD_DEFAULT);
+        $hash = password_hash($pass, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO User (Login, Pass) VALUES (:login, :pass)";
+        $sql = "INSERT INTO User (Login, Hash) VALUES (:login, :hash)";
         $params = [
             'login' => $login,
-            'pass' => $pass
+            'hash' => $hash
         ];
         return $this->db->executePrepareSql($sql, $params);
 
@@ -86,12 +86,12 @@ class AccountModel {
     function auth_user(){
 
         $post = $_POST;
-        $auth_login = $post['auth_login'];
+        $login = $post['auth_login'];
         $auth_pass = $post['auth_pass'];
 
 
-        if (isset($auth_login, $auth_pass)) {
-            $this->authorization($auth_login, $auth_pass);
+        if (isset($login, $auth_pass)) {
+            $this->authorization($login, $auth_pass);
         }
     }
 
@@ -116,12 +116,12 @@ class AccountModel {
 
     function check_password($login, $pass) {
 
-        $sql = "SELECT Pass FROM User WHERE Login= :login";
+        $sql = "SELECT Hash FROM User WHERE Login= :login";
         $params = [
             'login' => $login
         ];
         $resp = $this->db->fetchData($sql, $params);
-        if (password_verify($pass, $resp['Pass'])) {
+        if (password_verify($pass, $resp['Hash'])) {
             return true;
         }
 

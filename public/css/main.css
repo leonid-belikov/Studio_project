@@ -1,7 +1,14 @@
+@import "reset.css";
 @import "header.css";
+@import "main-page.css";
+@import "user-page.css";
 
 * {
     font-family: 'Dosis', 'Tahoma', sans-serif;
+}
+
+html body {
+    background-color: #f1f1f1;
 }
 
 .container {
@@ -13,67 +20,38 @@
     height: 100px;
 }
 
-
-/*head*/
-
-.head {
-    background-image: url("/images/header-bg.png");
-    background-size: cover;
+.fade-in {
+    opacity: 0;
 }
 
-.head-wrapper {
-    background: linear-gradient(to top, rgba(53, 0, 61, 0.6), rgba(81, 90, 211, 0.6));
+#fade-in {
+    opacity: 0;
 }
 
-.head .row {
-    height: 75vh;
+footer {
+    min-height: 50px;
+    background-color: #eaefff;
+    padding-bottom: 20px;
+    box-shadow: inset 0px 6px 22px rgba(0, 0, 0, 0.25);
 }
 
-.tagline {
-    text-align: center;
-    color: #e6edf4;
-}
-
-.tagline p {
-    margin: 25px 0;
-    padding: 0 230px;
-}
-
-.head .button {
-    display: block;
-    color: #e6edf4;
-    height: 35px;
-    width: 180px;
-    background: linear-gradient(to top, rgb(177, 0, 202), rgb(73, 90, 255));
-    margin: 0 auto;
-    padding: 5px;
-    border: 1px solid #3c235a;
-    border-radius: 5px;
-}
-
-
-
-/*advantages*/
-
-.advantages {
-    padding-top: 60px;
-    padding-bottom: 15px;
-}
-
-.advantages .item {
-    position: relative;
-    padding-left: 36px;
-    padding-right: 30px;
-    margin-bottom: 50px;
-}
-
-.advantages .item img {
-    display: block;
-    position: absolute;
-    top: 10px;
-    left: 0;
-}
-
-.advantages .item p {
+footer a {
+    padding: 10px;
+    margin: 36px 10px;
     margin-bottom: 0;
+    text-transform: uppercase;
+    border: 2px solid #c1c8cf;
+    border-radius: 6px;
+    color: #c1c8cf;
 }
+
+footer a:first-child {
+    margin-left: 0;
+}
+
+footer a:hover {
+    color: #5e6165;
+    box-shadow: 5px 5px 17px rgba(0, 0, 0, 0.2);
+    background-color: #f1f1f1;
+}
+

@@ -1,0 +1,81 @@
+
+
+/*head*/
+
+.main-head {
+    background-image: url("/images/header-bg_2.png");
+    background-size: cover;
+}
+
+.main-head .head-wrapper {
+    opacity: 0;
+    background: linear-gradient(to top, rgba(32, 0, 39, 0.6), rgba(41, 48, 113, 0.6));
+    /*background-color: rgba(255, 255, 255, 0.4);*/
+}
+
+.main-head .row {
+    height: 100vh;
+}
+
+.main-head .tagline {
+    padding-top: 140px;
+    text-align: center;
+    color: #c1c8cf;
+}
+
+.tagline h1 {
+    font-size: 60px;
+}
+
+.tagline p {
+    margin: 25px 0;
+    padding: 0 230px;
+}
+
+.main-head .button {
+    display: block;
+    color: #c1c8cf;
+    height: 35px;
+    width: 180px;
+    background: linear-gradient(to top, rgb(190, 112, 202), rgb(130, 140, 239));
+    margin: 0 auto;
+    padding: 5px;
+    border: 1px solid #3c235a;
+    border-radius: 5px;
+}
+
+.main-head .button:hover {
+    color: #fff;
+    transform: scale(1.05);
+}
+
+
+
+/*advantages*/
+
+.advantages {
+    padding-top: 60px;
+    padding-bottom: 15px;
+}
+
+.advantages .item {
+    position: relative;
+    padding: 20px;
+    padding-left: 47px;
+    margin-bottom: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+    margin-right: 36px;
+    box-shadow: 5px 5px 17px rgba(0, 0, 0, 0.2);
+}
+
+.advantages .item img {
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: 16px;
+}
+
+.advantages .item p {
+    margin-bottom: 0;
+}
