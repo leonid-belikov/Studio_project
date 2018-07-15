@@ -159,15 +159,38 @@
 
                     case 'reg_login':
 
-                        console.log('reg-login');
+                        var inputLogin = formElement[i].value;
+                        if (inputLogin !== '') {
+                            var matchLogin = inputLogin.match(/\w+/g);
+
+                            if (!matchLogin)
+                                incorrectList += 'login\n';
+                            else {
+
+                                if (inputLogin !== matchLogin.join(' '))
+                                    incorrectList += 'login\n';
+                            }
+                        } else {
+                            incorrectList += 'login\n';
+                        }
 
                         break;
 
                     case 'reg_pass':
 
-                        console.log('reg-pass');
+                        var inputPass = formElement[i].value;
+                        if (inputPass !== '') {
+                            var matchPass = inputPass.replace(/[.,!?@'"#$%^;:&*(){}[\]/\\+<>]?/g, '');
 
+                            console.log('inputPass = ' + inputPass);
+                            console.log('matchPass = ' + matchPass);
+                            console.log(inputPass === matchPass);
 
+                            if (inputPass !== matchPass)
+                                incorrectList += 'password\n';
+
+                        } else
+                            incorrectList += 'password\n';
 
                 }
             }
@@ -411,9 +434,6 @@
 
                     var formElement = document.getElementById("order_form");
 
-                    // if (validate(formElement) && validate(formElement) === 'Error')
-                    // console.log('validateOwn(formElement) = "' + validateOwn(formElement) + '"');
-
                     var invalidData = validateOwn(formElement);
                     if (invalidData)
                         alert('An error has occurred. Please enter correct data in the fields:\n' + invalidData);
@@ -548,44 +568,51 @@
                     var result = document.getElementById("result");
 
                     var formElement = document.getElementById("reg_form");
-                    var formData = new FormData(formElement);
 
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', '/account/registration_user', true);
-                    xhr.send(formData);
+                    var invalidData = validateOwn(formElement);
+                    if (invalidData)
+                        alert('An error has occurred. Please enter correct data in the fields:\n' + invalidData);
+                    else {
 
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState != 4) return;
+                        var formData = new FormData(formElement);
 
-                        if (xhr.status != 200) {
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/account/registration_user', true);
+                        xhr.send(formData);
 
-                            console.log(xhr.status + ': ' + xhr.statusText);
-                            // обработать ошибку
-                        } else {
-                            var reg_resp = xhr.responseText;
-                            console.log(reg_resp);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState != 4) return;
 
-                            switch (reg_resp) {
+                            if (xhr.status != 200) {
 
-                                case "user already registered":
-                                    result.style.display = "block";
-                                    result.innerHTML = "Логин занят. Измените логин и попробуйте снова.";
-                                    break;
+                                console.log(xhr.status + ': ' + xhr.statusText);
+                                // обработать ошибку
+                            } else {
+                                var reg_resp = xhr.responseText;
+                                console.log(reg_resp);
 
-                                case "user not add":
-                                    formElement.style.display = "none";
-                                    result.style.display = "block";
-                                    result.innerHTML = "Ошибка регистрации.";
-                                    break;
+                                switch (reg_resp) {
 
-                                case "user add":
-                                    formElement.style.display = "none";
-                                    result.style.display = "block";
-                                    result.innerHTML = "Регистрация прошла успешно.";
-                                    break;
+                                    case "user already registered":
+                                        result.style.display = "block";
+                                        result.innerHTML = "Логин занят. Измените логин и попробуйте снова.";
+                                        break;
+
+                                    case "user not add":
+                                        formElement.style.display = "none";
+                                        result.style.display = "block";
+                                        result.innerHTML = "Ошибка регистрации.";
+                                        break;
+
+                                    case "user add":
+                                        formElement.style.display = "none";
+                                        result.style.display = "block";
+                                        result.innerHTML = "Регистрация прошла успешно.";
+                                        break;
+
+                                }
 
                             }
-
                         }
                     }
                 }
