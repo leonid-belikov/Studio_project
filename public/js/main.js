@@ -10,7 +10,7 @@
     // переменная для идентификации страницы
 
     var title = document.querySelector("title").innerText;
-    // console.log(title);
+    console.log(title);
 
 
     // ...
@@ -60,6 +60,122 @@
     }
 
 
+    // функция, показывающая результат нажатия кнопок меню в личном кабинете
+
+    function showOrderRes(num) {
+        for (let i=0; i < orderResColl.length; i++) {
+            if (i === num)
+                orderResColl[i].style.display = 'block';
+            else
+                orderResColl[i].style.display = 'none';
+        }
+    }
+
+
+    // функция валидации данных
+
+    function validateOwn(formElement) {
+
+        var incorrectList = '';
+
+        for(let i = 0; i < formElement.length; i++) {
+            if ((formElement[i].type === 'text')||(formElement[i].type === 'textarea')||(formElement[i].type === 'password')){
+
+
+                switch (formElement[i].name) {
+
+                    case 'order-title':
+
+                        var inputTitle = formElement[i].value;
+                        if (inputTitle !== '') {
+                            var matchTitle = inputTitle.match(/\w+/g);
+
+                            if (!matchTitle)
+                                incorrectList += 'title\n';
+                            else {
+
+                                if (inputTitle !== matchTitle.join(' '))
+                                    incorrectList += 'title\n';
+                            }
+                        } else {
+                            incorrectList += 'title\n';
+                        }
+
+                        break;
+
+                    case 'order-specific':
+
+                        var inputSpec = formElement[i].value.replace(/\n+/g, ' ');
+                        if (inputSpec !== '') {
+                            var matchSpec = inputSpec.match(/[.,!?"]*\w+[.,!?"]*/g);
+
+                            if (!matchSpec)
+                                incorrectList += 'specification\n';
+                            else {
+
+                                if (inputSpec !== matchSpec.join(' '))
+                                    incorrectList += 'specification\n';
+                            }
+                        } else {
+                            incorrectList += 'specification\n';
+                        }
+
+                        break;
+
+                    case 'order-deadline':
+
+                        var inputDate = formElement[i].value.match(/\d+/g);
+
+                        if (inputDate !== null) {
+
+                            var date = new Date(inputDate[2], inputDate[1] - 1, inputDate[0]);
+                            var result = date.getFullYear() === parseInt(inputDate[2]) &&
+                                date.getDate() === parseInt(inputDate[0]) &&
+                                date.getMonth() === parseInt(inputDate[1]) - 1;
+
+                            if (!result)
+                                incorrectList += 'deadline\n';
+
+                        } else {
+                            incorrectList += 'deadline\n';
+                        }
+
+                        break;
+
+                    case 'order-cost':
+
+                        var inputCost = formElement[i].value;
+                        if (inputCost !== '') {
+                            var matchCost = inputCost.match(/\d+/);
+
+                            if (!matchCost)
+                                incorrectList += 'cost\n';
+
+                        } else {
+                            incorrectList += 'cost\n';
+                        }
+
+                        break;
+
+                    case 'reg_login':
+
+                        console.log('reg-login');
+
+                        break;
+
+                    case 'reg_pass':
+
+                        console.log('reg-pass');
+
+
+
+                }
+            }
+        }
+
+        console.log('incorrectList =\n' + incorrectList);
+        return incorrectList;
+    }
 
 
 
@@ -72,7 +188,8 @@
     switch (title)
     {
 
-        case 'Studio': // главная страница
+        // главная страница
+        case 'Studio':
 
 
             window.onload = function () {
@@ -126,18 +243,21 @@
             break;
 
 
-        case 'Personal cabinet': // Личный кабинет посетителя
 
+        // Личный кабинет посетителя
+        case 'Personal cabinet':
+
+
+            var orderArea = document.getElementsByClassName('order-area')[0]; // поле с заказами
 
             window.onload = function () {
 
 
                 // проявление поля с заказами
 
-                var fadeElem = document.getElementsByClassName('order-area')[0];
-                if (fadeElem.style.opacity == 0)
+                if (orderArea.style.opacity == 0)
                     setTimeout(function() {
-                        fadeIn(fadeElem, 75, 40);
+                        fadeIn(orderArea, 75, 40);
                         },
                         500);
 
@@ -150,31 +270,221 @@
                             if (slideElems[i].style.left = '-600px') {
                                 slideLeft(slideElems[i], -600, 0, 3, 100)}
                         },
-                        2000+150*(i+1))
+                        1500+150*(i+1))
                 }
 
             };
 
 
+            window.onscroll = function () {
+
+                // изменение фона шапки при прокрутке страницы
+
+                var header = document.getElementById('header');
+
+                if (document.body.scrollTop > 75) {
+                    header.style.backgroundColor = '#432c63';
+                } else {
+                    header.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+                }
+            };
+
+
             // обработка нажатий по кнопкам меню
 
-            var orderButton = document.getElementById("open-order");
+            var openOrderButton = document.getElementById("open-order");
+            var incOrdersButton = document.getElementById("inc-orders");
+            var compOrdersButton = document.getElementById("comp-orders");
+            var orderResColl = document.getElementsByClassName("order-res");
 
-            orderButton.onclick = function (e) {
-                e.preventDefault();
-                var orderDiv = document.getElementById("order-div");
-                orderDiv.style.display = 'block';
+            showOrderRes(0);
+
+            openOrderButton.onclick = function () // вывод формы нового заказа
+            {
+                showOrderRes(0);
             };
+
+            incOrdersButton.onclick = function (event) // вывод текущих заказов
+            {
+
+                event.preventDefault();
+
+                var formData = new FormData();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/order/show_unc', true);
+                xhr.send(formData);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState != 4) return;
+
+                    if (xhr.status != 200) {
+
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                        // TODO: обработать ошибку
+                    } else {
+                        var resp = JSON.parse(xhr.responseText);
+
+                        var uncList = '<h2>uncompleted orders</h2>';
+
+                        if(resp.length === 0)
+                            uncList += 'The list of uncompleted orders is empty.\nTo place an order, press "make new order".';
+                        else {
+
+                            for (let i = 0; i < resp.length; i++) {
+                                let str = '<div class="order-item"><h3>Order number</h3><div>' + resp[i]["idOrder"] + ' from ' + resp[i]["orderDate"] +
+                                    '</div><h3>Title</h3><div>' + resp[i]["title"] +
+                                    '</div><h3>Specification</h3><div>' + resp[i]["specification"] +
+                                    '</div><h3>Status</h3><div>' + resp[i]["status"] +
+                                    '</div><h3>Cost</h3><div>' + resp[i]["cost"] +
+                                    '</div><h3>Period of execution</h3><div>' + resp[i]["deadline"].split('.').reverse().join('.') +
+                                    '</div></div>';
+
+                                uncList += str;
+
+                            }
+                        }
+
+                        orderResColl[1].innerHTML = uncList;
+                    }
+                };
+
+                showOrderRes(1);
+            };
+
+            compOrdersButton.onclick = function (event) // вывод завершенных заказов
+            {
+
+                event.preventDefault();
+
+                var formData = new FormData();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/order/show_comp', true);
+                xhr.send(formData);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState != 4) return;
+
+                    if (xhr.status != 200) {
+
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                        // TODO: обработать ошибку
+                    } else {
+                        var resp = JSON.parse(xhr.responseText);
+
+                        var compList = '<h2>completed orders</h2>';
+
+                        if(resp.length === 0)
+                            compList += 'The list of completed orders is empty.\nTo make an order, press "make new order".';
+                        else {
+
+                            for (let i = 0; i < resp.length; i++) {
+                                let str = '<div class="order-item"><h3>Order number</h3><div>' + resp[i]["idOrder"] + ' from ' + resp[i]["orderDate"] +
+                                    '</div><h3>Title</h3><div>' + resp[i]["title"] +
+                                    '</div><h3>Specification</h3><div>' + resp[i]["specification"] +
+                                    '</div><h3>Status</h3><div>' + resp[i]["status"] +
+                                    '</div><h3>Cost</h3><div>' + resp[i]["cost"] +
+                                    '</div><h3>Period of execution</h3><div>' + resp[i]["deadline"] +
+                                    '</div></div>';
+
+                                compList += str;
+
+                            }
+                        }
+
+                        orderResColl[2].innerHTML = compList;
+                    }
+                };
+
+                showOrderRes(2);
+            };
+
+
+
+
+            jQuery('#order_form').submit // обработка данных, введенных в форму заказа
+            (
+                function (event) {
+
+                    event.preventDefault();
+
+                    var formElement = document.getElementById("order_form");
+
+                    // if (validate(formElement) && validate(formElement) === 'Error')
+                    // console.log('validateOwn(formElement) = "' + validateOwn(formElement) + '"');
+
+                    var invalidData = validateOwn(formElement);
+                    if (invalidData)
+                        alert('An error has occurred. Please enter correct data in the fields:\n' + invalidData);
+                    else {
+                        formElement['order-deadline'].value =
+                            formElement['order-deadline'].value.match(/\d+/g).reverse().join('.');
+
+                        var formData = new FormData(formElement);
+
+                        formElement['order-deadline'].value =
+                            formElement['order-deadline'].value.match(/\d+/g).reverse().join('.');
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/order/make_new', true);
+                        xhr.send(formData);
+
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState != 4) return;
+
+                            if (xhr.status != 200) {
+
+                                console.log(xhr.status + ': ' + xhr.statusText);
+                                // обработать ошибку
+                            } else {
+                                var resp = xhr.responseText;
+                                console.log(resp);
+
+                                var responseDiv;
+
+                                if (orderResColl.length <= 3) {
+                                    responseDiv = document.createElement('div');
+                                    responseDiv.className = 'order-res';
+                                    orderArea.appendChild(responseDiv);
+                                }
+                                else
+                                    responseDiv = orderResColl[3];
+
+                                switch (resp) {
+                                    case "All right":
+                                        responseDiv.innerText = 'Successfully. Your order is processed.';
+                                        break;
+
+                                    case "Smth wrong":
+                                        responseDiv.innerText = 'Try again. An error has occurred.';
+                                        break;
+
+                                    default:
+                                        responseDiv.innerText = 'Your order was successfully registered by number ' + resp + '.\n' +
+                                            'You can track the order status on the tab "Uncompleted orders".';
+                                }
+
+                                showOrderRes(3);
+
+                            }
+                        }
+                    }
+                }
+            );
+
 
 
             break;
 
 
-        case 'Log In':          // Страница авторизации
 
+        // Страница авторизации
+        case 'Log In':
 
             jQuery('#auth_form').submit(
                 function (event) {
+
                     event.preventDefault();
 
                     var result = document.getElementById("result");
@@ -187,7 +497,7 @@
                     xhr.open('POST', '/account/authorization_user', true);
                     xhr.send(formData);
 
-                    xhr.onreadystatechange = function() {
+                    xhr.onreadystatechange = function () {
                         if (xhr.readyState != 4) return;
 
                         if (xhr.status != 200) {
@@ -226,7 +536,9 @@
         break;
 
 
-        case 'Registration':    // Страница регистрации
+
+        // Страница регистрации
+        case 'Registration':
 
 
             jQuery('#reg_form').submit(
@@ -281,9 +593,7 @@
         break;
 
 
-
     }
-
 
 
 

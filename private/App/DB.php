@@ -39,4 +39,20 @@ class DB
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
+    public function fetchAllData($sql, $params){
+        $connect = $this->DBConnect();
+        $statement = $connect->prepare($sql);
+        $statement->execute($params);
+        return $statement->fetchAll(PDO::FETCH_OBJ);
+        // [
+        //   ['id'=>2, 'title'=>'Article title'],
+        //   ['id'=>3, 'title'=>'Article title 3'],
+        //   ['id'=>4, 'title'=>'Article title']
+        //]
+    }
+
+    public function get_last_id(){
+        return $this->connect->lastInsertId();
+    }
+
 }

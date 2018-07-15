@@ -40,10 +40,14 @@ class AccountModel {
             echo "user not add";
             return;
         }
+
         session_start();
+
+//        $session = $_SESSION;
         $_SESSION['auth'] = true;
         $_SESSION['login'] = $login;
         $_SESSION['pass'] = $pass;
+
         echo "user add";
         return;
     }
@@ -105,8 +109,12 @@ class AccountModel {
             echo "wrong password";
             return;
         }
+
         session_start();
+
+//        $session = $_SESSION;
         $_SESSION['auth'] = true;
+//        $session['id_user'] = $this->get_user_id($login);
         $_SESSION['login'] = $login;
         $_SESSION['pass'] = $pass;
         echo 'login successful';
