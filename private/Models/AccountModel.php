@@ -23,20 +23,21 @@ class AccountModel {
         $post = $_POST;
         $login = $post['reg_login'];
         $reg_pass = $post['reg_pass'];
+        $reg_mail = $post['reg_mail'];
 
-        if (isset($login, $reg_pass)) {
-            $this->registration($login, $reg_pass);
+        if (isset($login, $reg_pass, $reg_mail)) {
+            $this->registration($login, $reg_pass, $reg_mail);
         }
     }
 
 
-    private function registration($login, $pass){
+    private function registration($login, $pass, $mail){
 
         if ($this->data_in_base($login)) {
             echo "user already registered";
             return;
         }
-        if (!$this->add_user($login, $pass)) {
+        if (!$this->add_user($login, $pass, $mail)) {
             echo "user not add";
             return;
         }
@@ -46,7 +47,7 @@ class AccountModel {
 //        $session = $_SESSION;
         $_SESSION['auth'] = true;
         $_SESSION['login'] = $login;
-        $_SESSION['pass'] = $pass;
+//        $_SESSION['pass'] = $pass;
 
         echo "user add";
         return;
@@ -66,14 +67,15 @@ class AccountModel {
     }
 
 
-    private function add_user($login, $pass) {
+    private function add_user($login, $pass, $mail) {
 
         $hash = password_hash($pass, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO User (Login, Hash) VALUES (:login, :hash)";
+        $sql = "INSERT INTO User (Login, Hash, email) VALUES (:login, :hash, :email)";
         $params = [
             'login' => $login,
-            'hash' => $hash
+            'hash' => $hash,
+            'email' => $mail
         ];
         return $this->db->executePrepareSql($sql, $params);
 

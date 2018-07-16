@@ -1,4 +1,9 @@
+<section id="cont_section">
+    <div class="container">
+        <div class="row justify-content-end">
+            <h1>Contacts</h1>
+        </div>
 
-<div><h2>Контакты</h2></div>
-
-<div>Тебе не нужны наши контакты. Мы сами найдем тебя</div>
+        <div id="cont_info">For all questions, please contact studio@studio.com</div>
+    </div>
+</section>

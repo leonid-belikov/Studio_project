@@ -13,12 +13,22 @@
     console.log(title);
 
 
-    // ...
 
-    if ((title !== 'Studio')&&(title !== 'Personal cabinet')) {
-        var content = document.getElementById('content');
-        content.style.paddingTop = '100px';
+
+    // изменение фона шапки
+
+    function changeHeaderColor() {
+
+        var header = document.getElementById('header');
+
+        if (document.body.scrollTop > 75) {
+            header.style.backgroundColor = '#432c63';
+        } else {
+            header.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
+        }
     }
+
+
 
 
     // функция, обеспечивающая плавное проявление элемента
@@ -62,12 +72,12 @@
 
     // функция, показывающая результат нажатия кнопок меню в личном кабинете
 
-    function showOrderRes(num) {
-        for (let i=0; i < orderResColl.length; i++) {
+    function showRes(resArr, num) {
+        for (let i=0; i < resArr.length; i++) {
             if (i === num)
-                orderResColl[i].style.display = 'block';
+                resArr[i].style.display = 'block';
             else
-                orderResColl[i].style.display = 'none';
+                resArr[i].style.display = 'none';
         }
     }
 
@@ -192,6 +202,39 @@
                         } else
                             incorrectList += 'password\n';
 
+                        break;
+
+                    case 'changing-order':
+
+                        var inputOrder = formElement[i].value;
+                        if (inputOrder !== '') {
+                            var matchOrder = inputOrder.match(/\d+/g);
+
+                            if (parseInt(inputOrder) !== parseInt(matchOrder))
+                                incorrectList += 'order number\n';
+
+                        } else
+                            incorrectList += 'order number\n';
+
+                        break;
+
+                    case 'changing-status':
+
+                        var inputStatus = formElement[i].value;
+                        if (inputStatus !== '') {
+                            var matchStatus = inputStatus.match(/\w+/g);
+
+                            if (!matchStatus)
+                                incorrectList += 'new status\n';
+                            else {
+
+                                console.log(matchStatus);
+                                if (inputStatus !== matchStatus.join(' '))
+                                    incorrectList += 'new status\n';
+                            }
+                        } else
+                            incorrectList += 'new status\n';
+
                 }
             }
         }
@@ -235,14 +278,7 @@
 
                 // изменение фона шапки при прокрутке страницы
 
-
-                var header = document.getElementById('header');
-
-                if (document.body.scrollTop > 75) {
-                    header.style.backgroundColor = '#432c63';
-                } else {
-                    header.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-                }
+                changeHeaderColor();
 
 
                 // проявление элементов при прокрутке страницы
@@ -301,15 +337,11 @@
 
             window.onscroll = function () {
 
+
                 // изменение фона шапки при прокрутке страницы
 
-                var header = document.getElementById('header');
+                changeHeaderColor();
 
-                if (document.body.scrollTop > 75) {
-                    header.style.backgroundColor = '#432c63';
-                } else {
-                    header.style.backgroundColor = 'rgba(0, 0, 0, 0.4)';
-                }
             };
 
 
@@ -320,17 +352,16 @@
             var compOrdersButton = document.getElementById("comp-orders");
             var orderResColl = document.getElementsByClassName("order-res");
 
-            showOrderRes(0);
+            showRes(orderResColl, 0);
 
             openOrderButton.onclick = function () // вывод формы нового заказа
             {
-                showOrderRes(0);
+                showRes(orderResColl, 0);
             };
 
             incOrdersButton.onclick = function (event) // вывод текущих заказов
             {
 
-                event.preventDefault();
 
                 var formData = new FormData();
 
@@ -372,7 +403,7 @@
                     }
                 };
 
-                showOrderRes(1);
+                showRes(orderResColl, 1);
             };
 
             compOrdersButton.onclick = function (event) // вывод завершенных заказов
@@ -420,7 +451,7 @@
                     }
                 };
 
-                showOrderRes(2);
+                showRes(orderResColl, 2);
             };
 
 
@@ -485,8 +516,211 @@
                                             'You can track the order status on the tab "Uncompleted orders".';
                                 }
 
-                                showOrderRes(3);
+                                showRes(orderResColl, 3);;
 
+                            }
+                        }
+                    }
+                }
+            );
+
+
+
+            break;
+
+
+
+        // страница администратора
+        case 'Administration':
+
+
+            var viewArea = document.getElementsByClassName('view-area')[0]; // поле для просмотра
+
+
+            window.onload = function () {
+
+
+                // проявление поля для просмотра после загрузки страницы
+
+                if (viewArea.style.opacity == 0)
+                    setTimeout(function() {
+                            fadeIn(viewArea, 75, 40);
+                        },
+                        500);
+
+
+                // выезд слева пунктов меню после загрузки страницы
+
+                var slideElems = document.getElementsByClassName('view-menu-item');
+                for (let i = 0; i < slideElems.length; i++) {
+                    setTimeout(function() {
+                            if (slideElems[i].style.left = '-600px') {
+                                slideLeft(slideElems[i], -600, 0, 3, 100)}
+                        },
+                        1500+150*(i+1))
+                }
+
+            };
+
+
+            window.onscroll = function () {
+
+
+                // изменение фона шапки при прокрутке страницы
+
+                changeHeaderColor();
+
+            };
+
+
+            // обработка нажатий по кнопкам меню
+
+            var viewOrdersButton = document.getElementById("view-orders");
+            var viewUsersButton = document.getElementById("view-users");
+            var changeStatusButton = document.getElementById("change-status");
+            var viewResColl = document.getElementsByClassName("view-res");
+
+            showRes(viewResColl, 0);
+
+            viewOrdersButton.onclick = function () // вывод перечня заказов
+            {
+                var formData = new FormData();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/viewOrders', true);
+                xhr.send(formData);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState != 4) return;
+
+                    if (xhr.status != 200) {
+
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                        // TODO: обработать ошибку
+                    } else {
+
+                        var resp = JSON.parse(xhr.responseText);
+                        // var resp = xhr.responseText;
+
+                        console.log(resp);
+                        var ordersList = '<h2>list of orders</h2>';
+
+                        if(resp.length === 0)
+                            ordersList += 'The list of orders is empty.';
+                        else {
+
+                            for (let i = 0; i < resp.length; i++) {
+                                let str = '<div class="view-item"><h3>Order number</h3><div>' + resp[i]["idOrder"] + ' from ' + resp[i]["orderDate"] +
+                                    '</div><h3>Customer</h3><div>' + resp[i]["user"] +
+                                    '</div><h3>Title</h3><div>' + resp[i]["title"] +
+                                    '</div><h3>Specification</h3><div>' + resp[i]["specification"] +
+                                    '</div><h3>Status</h3><div>' + resp[i]["status"] +
+                                    '</div><h3>Cost</h3><div>' + resp[i]["cost"] +
+                                    '</div><h3>Period of execution</h3><div>' + resp[i]["deadline"] +
+                                    '</div></div>';
+
+                                ordersList += str;
+
+                            }
+
+                            viewResColl[0].innerHTML = ordersList;
+                            showRes(viewResColl, 0);
+
+                        }
+                    }
+                }
+            };
+
+
+            viewUsersButton.onclick = function () // вывод перечня пользователей
+            {
+                var formData = new FormData();
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/admin/viewUsers', true);
+                xhr.send(formData);
+
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState != 4) return;
+
+                    if (xhr.status != 200) {
+
+                        console.log(xhr.status + ': ' + xhr.statusText);
+                        // TODO: обработать ошибку
+                    } else {
+
+                        var resp = JSON.parse(xhr.responseText);
+                        // var resp = xhr.responseText;
+
+                        console.log(resp);
+                        var ordersList = '<h2>list of users</h2>';
+
+                        if(resp.length === 0)
+                            ordersList += 'The list of users is empty.';
+                        else {
+
+                            for (let i = 0; i < resp.length; i++) {
+
+                                let str = '<div class="view-item"><h3>User login</h3><div>' + resp[i]["Login"] +
+                                    '</div><h3>E-mail</h3><div>' + resp[i]["email"] +
+                                    '</div></div>';
+
+                                ordersList += str;
+
+                            }
+
+                            viewResColl[1].innerHTML = ordersList;
+                            showRes(viewResColl, 1);
+
+                        }
+                    }
+                }
+            };
+
+
+            changeStatusButton.onclick = function () // вывод формы для изменения статуса заказа
+            {
+                showRes(viewResColl, 2);
+
+            };
+
+
+            jQuery('#change-status-form').submit // обработка данных, введенных в форму изменения статуса заказа
+            (
+                function (event) {
+
+                    event.preventDefault();
+
+                    var formElement = document.getElementById("change-status-form");
+
+                    var invalidData = validateOwn(formElement);
+                    if (invalidData)
+                        alert('An error has occurred. Please enter correct data in the fields:\n' + invalidData);
+                    else {
+
+                        var formData = new FormData(formElement);
+
+                        var xhr = new XMLHttpRequest();
+                        xhr.open('POST', '/admin/change_status', true);
+                        xhr.send(formData);
+
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState != 4) return;
+
+                            if (xhr.status != 200) {
+
+                                console.log(xhr.status + ': ' + xhr.statusText);
+                                // обработать ошибку
+                            } else {
+                                var resp = xhr.responseText;
+                                console.log(resp);
+
+                                if (resp) {
+                                    viewResColl[2].innerText = 'The order status has been successfully changed. To view the changes, click "view orders"';
+                                } else {
+                                    viewResColl[2].innerText = 'The order status has not been changed. Try again.';
+                                }
+                                showRes(viewResColl, 2);
                             }
                         }
                     }
@@ -501,6 +735,33 @@
 
         // Страница авторизации
         case 'Log In':
+
+
+            window.onload = function () {
+
+
+                // проявление слогана на начальном экране после загрузки страницы
+
+                setTimeout(
+                    function () {
+                        var fadeForm = document.querySelector("#auth_form");
+                        if (fadeForm)
+                            fadeIn(fadeForm, 100, 20);
+                    }, 1500
+                )
+            };
+
+
+            window.onscroll = function () {
+
+
+                // изменение фона шапки при прокрутке страницы
+
+                changeHeaderColor();
+
+            };
+
+
 
             jQuery('#auth_form').submit(
                 function (event) {
@@ -531,20 +792,43 @@
                             switch (resp) {
 
                                 case "user is not registered":
-                                    result.innerHTML = "Пользователь не зарегистрирован. Измените логин и попробуйте снова.";
+                                    result.innerHTML = "User is not registered. Change the login and try again.";
                                     result.style.display = "block";
                                     reg_link.style.display = "block";
                                     break;
 
                                 case "wrong password":
                                     result.style.display = "block";
-                                    result.innerHTML = "Пароль неверный. Измените пароль и попробуйте снова.";
+                                    result.innerHTML = "Wrong password. Change the password and try again.";
                                     break;
 
                                 case "login successful":
                                     formElement.style.display = "none";
                                     result.style.display = "block";
-                                    result.innerHTML = "Вход выполнен. Добро пожаловать, " + formData.get('auth_login');
+                                    result.innerHTML = "Signed in. Welcome, " + formData.get('auth_login') + '.';
+                                    var account_link;
+
+                                    if (formData.get('auth_login') === 'lolo') {
+                                        account_link = "/account/adminroom";
+                                        document.querySelector('#auth_section').style.backgroundImage = 'url("/images/auth_reg_bg_4.png"';
+                                    }
+                                    else
+                                        account_link = "/account/userroom";
+
+                                    document.getElementsByClassName('header-menu')[0].innerHTML =
+                                        '<a href="' + account_link + '" class="username">' +
+                                        '<img id="user_icon" src="/images/user_icon.png" alt="logged in as">' +
+                                        formData.get('auth_login') +
+                                        '<a href="/portfolio">our projects</a>\n' +
+                                        '<a href="/contacts">contact us</a>\n' +
+                                        '<a href="/index/quit">log out</a>';
+                                    document.querySelector('footer .container .row').innerHTML =
+                                        '<a href="/account/userroom" class="username">' +
+                                        '<img id="user_icon" src="/images/user_icon.png" alt="logged in as">' +
+                                        formData.get('auth_login') +
+                                        '<a href="/portfolio">our projects</a>\n' +
+                                        '<a href="/contacts">contact us</a>\n' +
+                                        '<a href="/index/quit">log out</a>';
                                     break;
 
                             }
@@ -559,6 +843,31 @@
 
         // Страница регистрации
         case 'Registration':
+
+
+            window.onload = function () {
+
+
+                // проявление формы на начальном экране после загрузки страницы
+
+                setTimeout(
+                    function () {
+                        var fadeForm = document.querySelector("#reg_form");
+                        if (fadeForm)
+                            fadeIn(fadeForm, 100, 20);
+                    }, 1500
+                )
+            };
+
+
+            window.onscroll = function () {
+
+
+                // изменение фона шапки при прокрутке страницы
+
+                changeHeaderColor();
+
+            };
 
 
             jQuery('#reg_form').submit(
@@ -595,19 +904,35 @@
 
                                     case "user already registered":
                                         result.style.display = "block";
-                                        result.innerHTML = "Логин занят. Измените логин и попробуйте снова.";
+                                        result.innerHTML = "Login is busy. Change the login and try again.";
                                         break;
 
                                     case "user not add":
                                         formElement.style.display = "none";
                                         result.style.display = "block";
-                                        result.innerHTML = "Ошибка регистрации.";
+                                        result.innerHTML = "Registration error.";
+                                        document.querySelector('#cont_link').style.display = 'block';
                                         break;
 
                                     case "user add":
                                         formElement.style.display = "none";
                                         result.style.display = "block";
-                                        result.innerHTML = "Регистрация прошла успешно.";
+                                        result.innerHTML = "Registration completed successfully.  Welcome, " + formData.get('reg_login') + '.';
+
+                                        document.getElementsByClassName('header-menu')[0].innerHTML =
+                                            '<a href="/account/userroom" class="username">' +
+                                            '<img id="user_icon" src="/images/user_icon.png" alt="logged in as">' +
+                                            formData.get('reg_login') +
+                                            '<a href="/portfolio">our projects</a>\n' +
+                                            '<a href="/contacts">contact us</a>\n' +
+                                            '<a href="/index/quit">log out</a>';
+                                        document.querySelector('footer .container .row').innerHTML =
+                                            '<a href="/account/userroom" class="username">' +
+                                            '<img id="user_icon" src="/images/user_icon.png" alt="logged in as">' +
+                                            formData.get('reg_login') +
+                                            '<a href="/portfolio">our projects</a>\n' +
+                                            '<a href="/contacts">contact us</a>\n' +
+                                            '<a href="/index/quit">log out</a>';
                                         break;
 
                                 }
@@ -620,6 +945,45 @@
         break;
 
 
+
+        // Портфолио
+        case 'Portfolio':
+
+
+
+
+        window.onscroll = function () {
+
+
+            // изменение фона шапки при прокрутке страницы
+
+            changeHeaderColor();
+
+
+            // проявление элементов при прокрутке страницы
+
+            let fadeElemColl = document.getElementsByClassName('fade-in');
+
+            let pageHeight = document.documentElement.clientHeight;
+
+            if (fadeElemColl) {
+
+                for (let i = 0; i < fadeElemColl.length; i++) {
+                    var fadeElem = fadeElemColl[i];
+
+                    if ((fadeElem.style.opacity == 0) && (fadeElem.getBoundingClientRect().bottom - pageHeight <= 200)) {
+                        fadeIn(fadeElem, 100, 10);
+                    }
+                }
+            }
+
+        };
+
+
+
+
+
+        break;
     }
 
 

@@ -38,6 +38,11 @@ class AccountController extends Controller
     }
 
     public function userroomAction() {
+        session_start();
+        if (!$_SESSION['auth']){
+            session_destroy();
+            return;
+        }
         $view = 'userroom_view.php';
         $title = 'Personal cabinet';
         $this->generateResponse($view,
@@ -46,4 +51,19 @@ class AccountController extends Controller
             ]
         );
     }
-}
+
+    public function adminroomAction() {
+        session_start();
+        if (!$_SESSION['auth']){
+            session_destroy();
+            return;
+        }
+        $view = 'adminroom_view.php';
+        $title = 'Administration';
+        $this->generateResponse($view,
+            [
+                'title'=> $title,
+            ]
+        );
+    }
+};

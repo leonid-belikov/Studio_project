@@ -10,7 +10,7 @@ class PortfolioController extends Controller {
 
     public function indexAction() {
         $view = 'portfolio_view.php';
-        $title = 'STUDIO. Portfolio';
+        $title = 'Portfolio';
         $this->generateResponse($view, [
             'title'=> $title,
         ]);

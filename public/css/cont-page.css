@@ -1,0 +1,19 @@
+#cont_section {
+    background-image: url("/images/contacts_bg.png");
+    background-size: cover;
+    height: 100vh;
+    padding-top: 100px;
+}
+
+#cont_section h1 {
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    color: #322e6b;
+    margin: 45px 0;
+}
+
+#cont_info {
+    padding: 240px;
+    padding-left: 400px;
+}

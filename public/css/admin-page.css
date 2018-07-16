@@ -1,0 +1,134 @@
+#adminroom {
+    background: url(/images/adminroom-bg_2.png) no-repeat;
+    background-size: cover;
+}
+
+#adminroom .wrapper{
+    background-color: rgba(255, 255, 255, 0.2);
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
+
+#adminroom h1{
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    color: #322e6b;
+    margin: 45px 0;
+}
+
+.view-menu-item{
+    cursor: pointer;
+    padding: 40px;
+    margin: 10px 0;
+    background-color: rgba(207, 205, 234, 0.4);
+    border-radius: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 20px;
+    position: absolute;
+    width: 95%;
+    height: 100px;
+    box-shadow: 3px 6px 25px 0 rgba(27, 24, 57, 0.71);
+}
+
+.view-menu-item:first-child{
+    margin-top: 0;
+}
+
+.view-menu-item:hover{
+    background-color: #322e6b;
+    color: #f1f1f1;
+}
+
+#view-orders {
+    top: 0px;
+    left: -600px;
+}
+
+#view-users {
+    top: 105px;
+    left: -600px;
+}
+
+#change-status {
+    top: 220px;
+    left: -600px;
+}
+
+#adminroom .view-area {
+    background-color: rgba(207, 205, 234, 0.4);
+    border-radius: 12px;
+    padding: 30px;
+    opacity: 0;
+    height: 460px;
+    box-shadow: 3px 6px 25px 0 rgba(27, 24, 57, 0.71);
+}
+
+.view-res {
+    display: none;
+    padding: 20px;
+    padding-top: 0;
+    height: 400px;
+}
+
+.view-res h2{
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 7px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 20px;
+}
+
+#view-orders-div p {
+    margin-left: 300px;
+    font-size: 20px;
+}
+
+#view-orders-div, #view-users-div, #change-status-div {
+    overflow-y: auto;
+}
+
+.view-item {
+    background-color: #fff8ad;
+    margin: 2px 0;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#change-status-form input {
+    height: 30px;
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 0 15px;
+    width: 100%;
+}
+
+#change-status-form input[type='submit']
+{
+    width: 50%;
+    height: 67px;
+    text-transform: uppercase;
+    font-size: 18px;
+    margin-top: 12px;
+}
+
+#change-status-form input[type='submit']:hover
+{
+    background-color: #322e6b;
+    color: #f1f1f1;
+}
+
+#change-status-form label {
+    text-transform: uppercase;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+#change-status-form .row {
+    margin-bottom: 10px;
+}
+

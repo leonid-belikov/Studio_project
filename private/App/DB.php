@@ -21,8 +21,7 @@ class DB
     }
 
     private function DBConnect(){
-        $connection = new PDO("mysql:host=$this->servername;dbname=$this->db_name",
-            $this->username, $this->pwd);
+        $connection = new PDO("mysql:host=$this->servername;dbname=$this->db_name", $this->username, $this->pwd);
         return $connection;
     }
 
@@ -53,6 +52,12 @@ class DB
 
     public function get_last_id(){
         return $this->connect->lastInsertId();
+    }
+
+    public function query($sql){
+        $connect = $this->DBConnect();
+
+        return $connect->query($sql)->fetchAll(PDO::FETCH_OBJ);
     }
 
 }

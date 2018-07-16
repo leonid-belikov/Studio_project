@@ -1,19 +1,30 @@
+<section id="auth_section">
+    <div class="container">
+        <div class="row justify-content-end">
+            <h1>authorization</h1>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <form id="auth_form">
+                    <label for="auth_login">
+                        Enter login
+                    </label>
+                    <input id="auth_login" name="auth_login" placeholder="login">
 
-<div><h2>Авторизация</h2></div>
+                    <label for="auth_pwd">
+                        Enter password
+                    </label>
+                    <input type="password" id="auth_pwd" name="auth_pass" placeholder="password">
 
-<form id="auth_form">
-    <label for="auth_login">
-        Введите логин
-    </label>
-    <input id="auth_login" name="auth_login" placeholder="login">
+                    <input type="submit" value="Log in">
+                </form>
+            </div>
+            <div class="col-10">
+                <div id="result"></div>
+                <div id="reg_link"><a href="/account/registration">Or register.</a></div>
+            </div>
+        </div>
 
-    <label for="auth_pwd">
-        Введите пароль
-    </label>
-    <input type="password" id="auth_pwd" name="auth_pass" placeholder="password">
 
-    <input type="submit" value="Войти">
-</form>
-
-<div id="result" style="display: none"></div>
-<div id="reg_link" style="display: none"><a href="/account/registration">Или зарегистрируйтесь</a></div>
+    </div>
+</section>

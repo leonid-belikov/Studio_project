@@ -1,0 +1,35 @@
+#portfolio {
+    background: url(/images/portfolio_bg_3.png) repeat-y;
+    /*background-size: cover;*/
+    padding-top: 100px;
+}
+
+.portfolio-wrapper {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+#portfolio h1{
+    font-size: 50px;
+    text-transform: uppercase;
+    letter-spacing: 12px;
+    color: #322e6b;
+    margin: 45px 0;
+}
+
+#portfolio img {
+    border-radius: 8px;
+}
+
+.description h2 {
+    text-transform: uppercase;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.description p {
+    margin-bottom: 10px;
+}
+
+.fade-in {
+    opacity: 0;
+}

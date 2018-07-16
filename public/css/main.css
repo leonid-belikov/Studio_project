@@ -2,6 +2,12 @@
 @import "header.css";
 @import "main-page.css";
 @import "user-page.css";
+@import "auth-page.css";
+@import "reg-page.css";
+@import "cont-page.css";
+@import "admin-page.css";
+@import "portfolio.css";
+
 
 * {
     font-family: 'Encode Sans Condensed', 'Tahoma', sans-serif;
@@ -35,6 +41,9 @@ footer {
     box-shadow: inset 0px 6px 22px rgba(0, 0, 0, 0.25);
 }
 
+footer p {
+    padding-top: 20px;
+}
 footer a {
     padding: 10px;
     margin: 36px 10px;
